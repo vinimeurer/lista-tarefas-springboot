@@ -1,5 +1,63 @@
+## 2024-07-01 Criação do modelo de usuário
+Foi criado o arquivo [Usuario.java](./src/main/java/com/listadetarefas/listadetarefas/models/Usuario.java) e nele foi usado o framework Jakarta Persistence (JPA) para mapeamento objeto-relacional e Bean Validation para validação de dados. Também foi importada a dependência `Starter-validation`para validar os dados
+
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+
+
+
+#### Classe `Usuario`
+
+A classe `Usuario` representa um usuário na aplicação e possui os seguintes atributos:
+
+- `id`: Identificador único do usuário, gerado automaticamente.
+- `nomeusuario`: Nome do usuário, utilizado como identificador de login.
+- `senha`: Senha do usuário, armazenada com hash e protegida de acesso direto.
+
+#### Anotações de JPA
+
+- `@Entity`: Indica que a classe é uma entidade JPA, mapeada a uma tabela no banco de dados.
+- `@Table(name = "usuario")`: Especifica o nome da tabela no banco de dados associada à entidade `Usuario`.
+- `@Id`, `@GeneratedValue(strategy = GenerationType.IDENTITY)`: Define que o campo `id` é a chave primária, com geração automática de valor.
+- `@Column`: Especifica detalhes da coluna no banco de dados, como nome, tamanho e restrições de nulidade.
+
+#### Anotações de Validação
+
+- `@NotNull`, `@NotEmpty`: Garantem que os campos `nomeusuario` e `senha` não sejam nulos ou vazios.
+- `@Size(min = 2, max = 100)`, `@Size(min = 8, max = 60)`: Define os tamanhos mínimos e máximos para `nomeusuario` e `senha`, respectivamente.
+
+#### JSON Property
+
+- `@JsonProperty(access = Access.WRITE_ONLY)`: Garante que a senha seja serializada apenas para operações de escrita (não é retornada nas consultas).
+
+#### Construtores e Métodos Auxiliares
+
+- Construtores: `Usuario()`, `Usuario(Long id, String nomeusuario, String senha)`.
+- Getters e setters para todos os campos.
+
+#### Métodos Sobrescritos
+
+- `equals(Object obj)`: Sobrescrito para comparar objetos `Usuario` baseado nos campos `id`, `nomeusuario` e `senha`.
+- `hashCode()`: Sobrescrito para calcular o código hash baseado no `id`.
+
+#### Exemplo de Objeto JSON
+
+Abaixo está um exemplo de como um objeto `Usuario` seria representado em JSON:
+
+```json
+{
+  "id": 1,
+  "nomeusuario": "fulano123",
+  "senha": "********"
+}
+```
+
+
 ## 2024-06-26 - Configurações do banco de dados
-Foi configurado o arquivo [application.properties](.\src\main\resources\application.properties) para estabelecer conexão com o banco de dados. Foram usados os seguintes parâmetros:
+Foi configurado o arquivo [application.properties](./src/main/resources/application.properties) para estabelecer conexão com o banco de dados. Foram usados os seguintes parâmetros:
 ```
 spring.datasource.driver-class-name=com.mysql.jdbc.Driver
 spring.datasource.url=jdbc:mysql://localhost:3306/listadetarefas?createDatabaseIfNotExist=true
